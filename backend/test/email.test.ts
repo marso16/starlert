@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 
 const { sendMock } = vi.hoisted(() => {
   return {
@@ -17,6 +17,10 @@ vi.mock("resend", () => ({
 import { createEmailClient } from "../src/email/client";
 
 describe("email client", () => {
+  beforeEach(() => {
+    sendMock.mockResolvedValue({ data: { id: "test" }, error: null });
+  });
+
   it("sends a magic link email containing the login url", async () => {
     const client = createEmailClient("test-key", "alerts@example.com");
     await client.sendMagicLinkEmail("owner@acme.com", "https://app.example.com/auth/verify?token=abc");
@@ -40,5 +44,33 @@ describe("email client", () => {
     const call = sendMock.mock.calls.at(-1)?.[0];
     expect(call.subject).toContain("1 star");
     expect(call.html).toContain("Terrible service");
+  });
+
+  it("throws an error when magic link email send fails", async () => {
+    sendMock.mockResolvedValueOnce({
+      data: null,
+      error: { message: "Invalid domain" },
+    });
+
+    const client = createEmailClient("test-key", "alerts@example.com");
+    await expect(
+      client.sendMagicLinkEmail("owner@acme.com", "https://app.example.com/auth/verify?token=abc")
+    ).rejects.toThrow("Failed to send magic link email");
+  });
+
+  it("throws an error when alert fallback email send fails", async () => {
+    sendMock.mockResolvedValueOnce({
+      data: null,
+      error: { message: "Rate limit exceeded" },
+    });
+
+    const client = createEmailClient("test-key", "alerts@example.com");
+    await expect(
+      client.sendAlertFallbackEmail("owner@acme.com", {
+        rating: 3,
+        text: "Good service",
+        author: "Bob",
+      })
+    ).rejects.toThrow("Failed to send alert fallback email");
   });
 });

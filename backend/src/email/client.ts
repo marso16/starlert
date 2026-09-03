@@ -16,20 +16,26 @@ export function createEmailClient(apiKey: string, fromAddress: string): EmailCli
 
   return {
     async sendMagicLinkEmail(to, loginUrl) {
-      await resend.emails.send({
+      const { error } = await resend.emails.send({
         from: fromAddress,
         to,
         subject: "Your login link",
         html: `<p>Click below to log in. This link expires in 15 minutes.</p><p><a href="${loginUrl}">${loginUrl}</a></p>`,
       });
+      if (error) {
+        throw new Error(`Failed to send magic link email: ${error}`);
+      }
     },
     async sendAlertFallbackEmail(to, review) {
-      await resend.emails.send({
+      const { error } = await resend.emails.send({
         from: fromAddress,
         to,
         subject: `New ${review.rating} star review needs your attention`,
         html: `<p>A new review from ${review.author ?? "a customer"} came in:</p><blockquote>${review.text ?? "(no comment left)"}</blockquote><p>Rating: ${review.rating} out of 5.</p>`,
       });
+      if (error) {
+        throw new Error(`Failed to send alert fallback email: ${error}`);
+      }
     },
   };
 }
