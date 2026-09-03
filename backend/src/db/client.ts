@@ -8,6 +8,7 @@ export function createDb(path: string): {
 } {
   const sqlite = new Database(path);
   sqlite.pragma("journal_mode = WAL");
+  sqlite.pragma("foreign_keys = ON");
   const db = drizzle(sqlite, { schema });
   return { db, sqlite };
 }
