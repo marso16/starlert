@@ -22,7 +22,14 @@ authRouter.post("/request-link", async (req, res) => {
   if (user) {
     const { token } = createLoginToken(user.id);
     const loginUrl = `${FRONTEND_URL}/auth/verify?token=${token}`;
-    await emailClient.sendMagicLinkEmail(email, loginUrl);
+    // Fire and forget: do not await the send. Awaiting it here would make a
+    // registered email measurably slower to respond than an unregistered one
+    // (a response-timing side channel), and would turn a Resend failure into
+    // a 500 on this branch only, both of which defeat the "identical response
+    // regardless of registration" guarantee below.
+    emailClient.sendMagicLinkEmail(email, loginUrl).catch((error) => {
+      console.error("Failed to send magic link email", error);
+    });
   }
 
   // Always respond the same way whether or not the email is registered,
