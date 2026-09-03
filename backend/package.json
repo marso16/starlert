@@ -2,9 +2,12 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "src/server.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx watch src/server.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx src/db/migrate.ts",
+    "test": "vitest run"
   },
   "keywords": [],
   "author": "",
@@ -20,12 +23,25 @@
   "type": "commonjs",
   "dependencies": {
     "better-sqlite3": "^13.0.3",
-    "drizzle-orm": "^0.45.2"
+    "bullmq": "^6.3.4",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.4.2",
+    "drizzle-orm": "^0.45.2",
+    "express": "^5.2.1",
+    "google-auth-library": "^11.0.2",
+    "ioredis": "^6.0.0",
+    "resend": "^6.25.0"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^9.6.0",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/express": "^5.0.6",
     "@types/node": "^26.4.1",
+    "@types/supertest": "^7.2.1",
     "drizzle-kit": "^0.31.10",
-    "tsx": "^4.23.13"
+    "supertest": "^7.2.2",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.11"
   }
 }
