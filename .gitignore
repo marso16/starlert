@@ -34,5 +34,9 @@ frontend/vite.config.ts.timestamp-*
 
 # Backend (sqlite data files - migrations in backend/drizzle should still be committed)
 backend/*.sqlite
+backend/*.sqlite-shm
+backend/*.sqlite-wal
 backend/*.sqlite3
+backend/*.sqlite3-shm
+backend/*.sqlite3-wal
 backend/*.db
