@@ -7,7 +7,9 @@
     "dev": "tsx watch src/server.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx src/db/migrate.ts",
-    "test": "vitest run"
+    "test": "vitest run",
+    "worker": "tsx src/queue/emailFallbackWorker.ts",
+    "poller": "tsx src/google/poller.ts"
   },
   "keywords": [],
   "author": "",
