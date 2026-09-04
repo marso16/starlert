@@ -16,5 +16,14 @@ export default defineConfig({
 			// See https://svelte.dev/docs/kit/adapters for more information about adapters.
 			adapter: adapter()
 		})
-	]
+	],
+
+	server: {
+		proxy: {
+			'/api': {
+				target: process.env.BACKEND_URL ?? 'http://localhost:3000',
+				changeOrigin: true
+			}
+		}
+	}
 });

@@ -1,18 +1,13 @@
-# Svelte library
+# sv
 
-Everything you need to build a Svelte library, powered by [`sv`](https://npmjs.com/package/sv).
-
-Read more about creating a library [in the docs](https://svelte.dev/docs/kit/packaging).
+Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
 
 ## Creating a project
 
 If you're seeing this, you've probably already done this step. Congrats!
 
 ```sh
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
+# create a new project
 npx sv create my-app
 ```
 
@@ -20,7 +15,7 @@ To recreate this project with the same configuration:
 
 ```sh
 # recreate this project
-pnpm dlx sv@0.17.0 create --template library --types ts --install pnpm my-app
+pnpm dlx sv@0.17.0 create --template minimal --types ts --install pnpm frontend
 ```
 
 ## Developing
@@ -34,17 +29,9 @@ npm run dev
 npm run dev -- --open
 ```
 
-Everything inside `src/lib` is part of your library, everything inside `src/routes` can be used as a showcase or preview app.
-
 ## Building
 
-To build your library:
-
-```sh
-npm pack
-```
-
-To create a production version of your showcase app:
+To create a production version of your app:
 
 ```sh
 npm run build
@@ -53,13 +40,3 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
-
-## Publishing
-
-Go into the `package.json` and give your package the desired name through the `"name"` option. Also consider adding a `"license"` field and point it to a `LICENSE` file which you can create from a template (one popular option is the [MIT license](https://opensource.org/license/mit/)).
-
-To publish your library to [npm](https://www.npmjs.com):
-
-```sh
-npm publish
-```
